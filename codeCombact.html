@@ -20,9 +20,9 @@
 	  DPS: {{DPS}}
     </div>
     <div class="col-sm" id="winnerStudent">
-		Congratulations
+		<h4>Congratulations</h4>
 		<br>
-		{{name}}
+		<h4><marquee behavior="alternate" >{{name}}</marquee></h4>
     </div>
     <div class="col-sm" id="funnyStudent">
       NAME: {{name}}
@@ -56,13 +56,33 @@ var SDPS = Math.floor(Math.random()*200);
 var FHP = Math.floor(Math.random() * 101) - 100;
 var FDPS = Math.floor(Math.random()*200);
 
-var request = new XMLHttpRequest()
+var myObject = new Vue({
+		el: '#seriousStudent',
+		data: {name: "",
+			HP: SHP,
+			DPS: SDPS
+	  }
+	})
 
+var myObject1 = new Vue({
+		el: '#funnyStudent',
+		data: {name: "",
+			HP: FHP,
+			DPS: FDPS
+	  }
+	})	
+	
+var Wobject = new Vue({
+	el: '#winnerStudent',
+	data: {name: ""}
+})	
+
+var request = new XMLHttpRequest()
 request.open('GET', 'https://jsonplaceholder.typicode.com/users', true)
+
 request.onload = function () {
   // Begin accessing JSON data here
   var data = JSON.parse(this.response)
-
   if (request.status >= 200 && request.status < 400) {
     data.forEach((student) => {
 		studentsArr.push(student.name);
@@ -72,36 +92,11 @@ request.onload = function () {
 	if (Sname == Fname){
 		Fname = studentsArr[Math.floor(Math.random() * studentsArr.length)];
 	}
-	var myObject = new Vue({
-	  el: '#funnyStudent',
-	  data: {name: Sname,
-		  HP: SHP,
-		  DPS: SDPS
-	  },
-	  methods: {
-		Randomize() {
-			this.name = studentsArr[Math.floor(Math.random() * studentsArr.length)];
-			this.HP = Math.floor(Math.random() * 101) - 100;
-			this.DPS = Math.floor(Math.random()*200);
-		}
-	  },
-	})
-	var myObject1 = new Vue({
-	  el: '#seriousStudent',
-	  data: {name: Fname,
-		  HP: FHP,
-		  DPS: FDPS
-	  },
-	  methods: {
-		Randomize1() {
-			this.name = studentsArr[Math.floor(Math.random() * studentsArr.length)];
-			this.HP = Math.floor(Math.random() * 101) - 100;
-			this.DPS = Math.floor(Math.random()*200);
-		}
-	  },
-	})
+	myObject.name = Sname;
+	myObject1.name = Fname;
   } else {
-    console.log('error')
+    Sname = ""
+	Fname = ""
   }
 }
 
@@ -112,24 +107,20 @@ function Randomize(num){
 	var rHP = Math.floor(Math.random() * 101) - 100;
 	var rDPS = Math.floor(Math.random()*200);
 	if (num == 1){
-		var myObject = new Vue({
-		  el: '#seriousStudent1',
-		  data: {
-			name: rname,
-			HP: rHP,
-			DPS: rDPS
-		  }
-		});	 
+		myObject.name = rname;
+		Sname = rname;
+		myObject.HP = rHP;
+		SHP = rHP;
+		myObject.DPS = rDPS;
+		SDPS = rDPS;
 	}
 	else{
-		var myObject1 = new Vue({
-		  el: '#funnyStudent1',
-		  data: {
-			name: rname,
-			HP: rHP,
-			DPS: rDPS
-		  }
-		})
+		myObject1.name = rname;
+		Fname = rname;
+		myObject1.HP = rHP;
+		FHP = rHP;
+		myObject1.DPS = rDPS;
+		FDPS = rDPS;
 	}
 }
 
@@ -137,16 +128,10 @@ function Compete(){
 	ss = SHP/FDPS;
 	fs = FHP/SDPS;
 	if(ss < fs){
-		var myObject = new Vue({
-		  el: '#winnerStudent',
-		  data: {name: Fname}
-		})
+		Wobject.name = Fname
 	}
 	else{
-		var myObject = new Vue({
-		  el: '#winnerStudent',
-		  data: {name: Sname}
-		})
+		Wobject.name = Sname
 	}
 }
 
