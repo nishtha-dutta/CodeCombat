@@ -13,7 +13,9 @@
 <div class="container">
   <div class="row">
     <div class="col-sm" id="seriousStudent">
-      NAME: {{name}}
+      <img v-bind:src="picture" style="height: 150px;">
+	  <br>
+	  NAME: {{name}}
 	  <br>
 	  HP: {{HP}}
 	  <br>
@@ -25,6 +27,8 @@
 		<h4><marquee behavior="alternate" >{{name}}</marquee></h4>
     </div>
     <div class="col-sm" id="funnyStudent">
+	  <img v-bind:src="picture" style="height: 150px;">
+	  <br>
       NAME: {{name}}
 	  <br>
 	  HP: {{HP}}
@@ -56,19 +60,31 @@ var SDPS = Math.floor(Math.random()*200);
 var FHP = Math.floor(Math.random() * 101) - 100;
 var FDPS = Math.floor(Math.random()*200);
 
-var myObject = new Vue({
+var random_images_array = ["https://image.shutterstock.com/image-illustration/luxury-abstract-fluid-art-painting-600w-1471082564.jpg", 
+							"https://image.shutterstock.com/image-photo/closeup-peeling-painted-old-wall-600w-1357631900.jpg",
+							"https://image.shutterstock.com/image-photo/decorative-ornament-leaf-made-metal-600w-1354033148.jpg",
+							"https://image.shutterstock.com/image-vector/feather-set-isolated-on-white-260nw-393624268.jpg"];
+							
+var num = Math.floor( Math.random() * random_images_array.length );
+var sImgURL = random_images_array[num];
+num = Math.floor( Math.random() * random_images_array.length );
+var fImgURL = random_images_array[num];
+
+var sObject = new Vue({
 		el: '#seriousStudent',
 		data: {name: "",
 			HP: SHP,
-			DPS: SDPS
+			DPS: SDPS,
+			picture: sImgURL
 	  }
 	})
 
-var myObject1 = new Vue({
+var fObject = new Vue({
 		el: '#funnyStudent',
 		data: {name: "",
 			HP: FHP,
-			DPS: FDPS
+			DPS: FDPS,
+			picture: fImgURL
 	  }
 	})	
 	
@@ -92,8 +108,8 @@ request.onload = function () {
 	if (Sname == Fname){
 		Fname = studentsArr[Math.floor(Math.random() * studentsArr.length)];
 	}
-	myObject.name = Sname;
-	myObject1.name = Fname;
+	sObject.name = Sname;
+	fObject.name = Fname;
   } else {
     Sname = ""
 	Fname = ""
@@ -102,25 +118,29 @@ request.onload = function () {
 
 request.send()
 
-function Randomize(num){
+function Randomize(n){
 	var rname = studentsArr[Math.floor(Math.random() * studentsArr.length)];
 	var rHP = Math.floor(Math.random() * 101) - 100;
 	var rDPS = Math.floor(Math.random()*200);
-	if (num == 1){
-		myObject.name = rname;
+	var num = Math.floor( Math.random() * random_images_array.length );
+	var ImgURL = random_images_array[num];
+	if (n == 1){
+		sObject.name = rname;
 		Sname = rname;
-		myObject.HP = rHP;
+		sObject.HP = rHP;
 		SHP = rHP;
-		myObject.DPS = rDPS;
+		sObject.DPS = rDPS;
 		SDPS = rDPS;
+		sObject.picture = ImgURL;
 	}
 	else{
-		myObject1.name = rname;
+		fObject.name = rname;
 		Fname = rname;
-		myObject1.HP = rHP;
+		fObject.HP = rHP;
 		FHP = rHP;
-		myObject1.DPS = rDPS;
+		fObject.DPS = rDPS;
 		FDPS = rDPS;
+		fObject.picture = ImgURL;
 	}
 }
 
